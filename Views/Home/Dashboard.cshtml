@@ -1,0 +1,511 @@
+﻿@model EAPD7111wPOE_Part1.Models.ViewModels.DashboardFilterViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+
+    body {
+        overflow: hidden;
+    }
+
+    .container,
+    .dash-container {
+        max-width: 98%;
+    }
+
+    /* =========================================
+           HERO SECTION
+        ========================================== */
+
+    .hero-section {
+        background: linear-gradient(to right, #0f172a, #1e3a8a);
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+        .hero-section h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .hero-section p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+    .page-name {
+        margin-top: 5px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #dbeafe;
+    }
+
+    /* =========================================
+           DASHBOARD CONTAINER
+        ========================================== */
+
+    .dash-container {
+        padding: 10px;
+    }
+
+    .dash-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #1e3a8a;
+    }
+
+    /* =========================================
+           DASHBOARD CARDS
+        ========================================== */
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .dash-card {
+        padding: 10px;
+        border-radius: 8px;
+        color: white;
+        min-height: 70px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+        transition: transform 0.2s ease;
+    }
+
+        .dash-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .dash-card h5 {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .dash-card h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+    .blue {
+        background: #1e3a8a;
+    }
+
+    .green {
+        background: #16a34a;
+    }
+
+    .orange {
+        background: #f59e0b;
+    }
+
+    .red {
+        background: #dc2626;
+    }
+
+    .gray {
+        background: #6b7280;
+    }
+
+    /* =========================================
+           FILTER PANEL
+        ========================================== */
+
+    .filter-panel {
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .filter-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #1e3a8a;
+    }
+
+    .form-label {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .form-control {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .btn-filter {
+        background-color: #1e3a8a;
+        color: white;
+        border: none;
+        font-size: 12px;
+        padding: 6px;
+    }
+
+        .btn-filter:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+
+    /* =========================================
+           TABLE SECTION
+        ========================================== */
+
+    .results-title {
+        font-size: 18px;
+        margin-bottom: 8px;
+        color: #1e3a8a;
+    }
+
+    .table-container {
+        max-height: 24vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        scroll-behavior: smooth;
+    }
+
+    .table {
+        margin-bottom: 0;
+        font-size: 12px;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #1e3a8a;
+            color: white;
+            z-index: 2;
+            font-size: 12px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+    /* =========================================
+           FOOTER
+        ========================================== */
+
+    .footer-section {
+        margin-top: 8px;
+        text-align: center;
+        padding: 8px;
+        background-color: #f1f5f9;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+        .footer-section h4 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+</style>
+
+<div class="hero-section">
+
+    <h1>TechMove Logistics:</h1>
+
+    <p>
+        Smart Logistics Solutions for Contracts,
+        Service Requests, and Global Operations.
+    </p>
+
+    <div class="page-name">
+        Dashboard
+    </div>
+
+</div>
+
+<partial name="_NavigationMenu" />
+
+<div class="dash-container">
+
+    <div class="dash-title">
+        Dashboard
+    </div>
+
+    <!-- =========================================
+         DASHBOARD CARDS
+    ========================================== -->
+
+    <div class="card-grid">
+
+        <div class="dash-card blue">
+            <h5>Total Contracts</h5>
+            <h4>@Model.TotalContracts</h4>
+        </div>
+
+        <div class="dash-card gray">
+            <h5>Draft</h5>
+            <h4>@Model.DraftContracts</h4>
+        </div>
+
+        <div class="dash-card green">
+            <h5>Active</h5>
+            <h4>@Model.ActiveContracts</h4>
+        </div>
+
+        <div class="dash-card orange">
+            <h5>On Hold</h5>
+            <h4>@Model.OnHoldContracts</h4>
+        </div>
+
+        <div class="dash-card red">
+            <h5>Expired</h5>
+            <h4>@Model.ExpiredContracts</h4>
+        </div>
+
+        <div class="dash-card gray">
+            <h5>Cancelled</h5>
+            <h4>@Model.CancelledContracts</h4>
+        </div>
+
+        <div class="dash-card blue">
+            <h5>Total Requests</h5>
+            <h4>@Model.TotalRequests</h4>
+        </div>
+
+        <div class="dash-card gray">
+            <h5>Assigned</h5>
+            <h4>@Model.DraftRequests</h4>
+        </div>
+
+        <div class="dash-card orange">
+            <h5>Booked</h5>
+            <h4>@Model.UnderReviewRequests</h4>
+        </div>
+
+        <div class="dash-card green">
+            <h5>In Transit</h5>
+            <h4>@Model.ActiveRequests</h4>
+        </div>
+
+        <div class="dash-card red">
+            <h5>Delivered</h5>
+            <h4>@Model.RejectedRequests</h4>
+        </div>
+
+        <div class="dash-card gray">
+            <h5>Cancelled</h5>
+            <h4>@Model.CancelledRequests</h4>
+        </div>
+    </div>
+
+    <!-- =========================================
+         FILTER SECTION
+    ========================================== -->
+
+    <div class="filter-panel">
+
+        <div class="filter-title">
+            Search / Filter Contracts
+        </div>
+
+        <form method="get"
+              asp-controller="Home"
+              asp-action="Dashboard">
+
+            <div class="row">
+
+                <!-- START DATE FROM -->
+                <div class="col-md-3 mb-2">
+
+                    <label class="form-label">
+                        Start Date From
+                    </label>
+
+                    <input type="date"
+                           name="startDateFrom"
+                           value="@(Model.StartDateFrom?.ToString("yyyy-MM-dd"))"
+                           class="form-control" />
+
+                </div>
+
+                <!-- START DATE TO -->
+                <div class="col-md-3 mb-2">
+
+                    <label class="form-label">
+                        Start Date To
+                    </label>
+
+                    <input type="date"
+                           name="startDateTo"
+                           value="@(Model.StartDateTo?.ToString("yyyy-MM-dd"))"
+                           class="form-control" />
+
+                </div>
+
+                <!-- STATUS -->
+                <div class="col-md-3 mb-2">
+
+                    <label class="form-label">
+                        Contract Status
+                    </label>
+
+                    <select name="status"
+                            class="form-control">
+
+                        <option value="">
+                            -- All Statuses --
+                        </option>
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="On hold">
+                            On hold
+                        </option>
+
+                        <option value="Expired">
+                            Expired
+                        </option>
+
+                        <option value="Draft">
+                            Draft
+                        </option>
+
+                        <option value="Under Review">
+                            Under Review
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                        <option value="Rejected">
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- BUTTON -->
+                <div class="col-md-3 d-flex align-items-end mb-2">
+
+                    <button type="submit"
+                            class="btn btn-filter w-100">
+
+                        Search Contracts
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- =========================================
+         FILTER RESULTS TABLE
+    ========================================== -->
+
+    <h3 class="results-title">
+        Filtered Contract Results
+    </h3>
+
+    <div class="table-container">
+
+        <table class="table table-bordered table-hover mb-0">
+
+            <thead>
+
+                <tr>
+
+                    <th>Contract ID</th>
+
+                    <th>Client ID</th>
+
+                    <th>Start Date</th>
+
+                    <th>End Date</th>
+
+                    <th>Status</th>
+
+                    <th>Service Level</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @if (Model.FilteredContracts != null &&
+                                Model.FilteredContracts.Any())
+                {
+                    foreach (var contract in Model.FilteredContracts)
+                    {
+                        <tr>
+
+                            <td>
+                                @contract.ContractID
+                            </td>
+
+                            <td>
+                                @contract.ClientID
+                            </td>
+
+                            <td>
+                                @contract.StartDate.ToShortDateString()
+                            </td>
+
+                            <td>
+                                @contract.EndDate.ToShortDateString()
+                            </td>
+
+                            <td>
+                                @contract.Status
+                            </td>
+
+                            <td>
+                                @contract.ServiceLevel
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="6"
+                            class="text-center">
+
+                            No contracts found.
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="footer-section">
+    <h4>TechMove Logistics</h4>
+    <p>
+        Delivering innovative and scalable logistics management solutions.
+    </p>
+</div>

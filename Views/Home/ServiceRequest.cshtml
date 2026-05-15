@@ -1,0 +1,389 @@
+﻿<!-- Views/Home/ServiceRequest.cshtml -->
+@model IEnumerable<EAPD7111wPOE_Part1.Models.ServiceRequest>
+@using EAPD7111wPOE_Part1.Models
+@{
+    var requests = Model ?? new List<ServiceRequest>();
+}
+@{
+    ViewData["Title"] = "Service Request";
+}
+
+<style>
+
+    body {
+        overflow: hidden;
+    }
+
+    .container {
+        max-width: 98%;
+    }
+
+    /* =========================================
+           HERO SECTION
+        ========================================== */
+
+    .hero-section {
+        background: linear-gradient(to right, #0f172a, #1e3a8a);
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+        .hero-section h1 {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .hero-section p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+    .page-name {
+        font-size: 20px;
+        font-weight: 600;
+        color: #dbeafe;
+    }
+
+    /* =========================================
+           MAIN LAYOUT
+        ========================================== */
+
+    .main-layout {
+        display: flex;
+        gap: 15px;
+        height: 54vh;
+    }
+
+    /* =========================================
+           FORM PANEL
+        ========================================== */
+
+    .form-panel {
+        width: 32%;
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        overflow-y: auto;
+    }
+
+        .form-panel h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+    .form-control {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    textarea.form-control {
+        height: 80px;
+        resize: none;
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    /* =========================================
+           TABLE PANEL
+        ========================================== */
+
+    .table-panel {
+        width: 68%;
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+        .table-panel h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+    .table-scroll {
+        max-height: 40vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        scroll-behavior: smooth;
+    }
+
+    .table {
+        margin-bottom: 0;
+        font-size: 13px;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #1e3a8a;
+            color: white;
+            z-index: 2;
+            font-size: 13px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+    /* =========================================
+           WORKFLOW BADGES
+        ========================================== */
+
+    .workflow-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        color: white;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .draft {
+        background-color: gray;
+    }
+
+    .review {
+        background-color: orange;
+    }
+
+    .cancelled {
+        background-color: red;
+    }
+
+    .rejected {
+        background-color: black;
+    }
+
+    .active {
+        background-color: green;
+    }
+
+    /* =========================================
+           FOOTER
+        ========================================== */
+
+    .footer-section {
+        margin-top: 10px;
+        text-align: center;
+        padding: 8px;
+        background-color: #f1f5f9;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+        .footer-section h4 {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+</style>
+
+<div class="hero-section">
+    <h1>TechMove Logistics:</h1>
+
+    <p>
+        Smart Logistics Solutions for Contracts,
+        Service Requests, and Global Operations.
+    </p>
+
+    <div class="page-name">
+        Service Request
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <pre>@ViewBag.Error</pre>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<partial name="_NavigationMenu" />
+
+<div class="container">
+
+    <div class="main-layout">
+
+        <!-- =====================================
+             LEFT PANEL - FORM
+        ====================================== -->
+
+        <div class="form-panel">
+
+            <h3>Create Service Request</h3>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success p-2">
+                    @TempData["Success"]
+                </div>
+            }
+
+            <form asp-controller="ServiceRequests"
+                  asp-action="Create"
+                  method="post">
+
+                <div class="mb-2">
+
+                    <label>Contract ID</label>
+
+                    <select name="ContractID"
+                            class="form-control">
+
+                        <option value="">
+                            -- Select Contract --
+                        </option>
+
+                        @foreach (var c in (List<EAPD7111wPOE_Part1.Models.ViewModels.ContractDropdownViewModel>)ViewBag.ContractList)
+                        {
+                            <option value="@c.ContractID">
+                                @c.DisplayText
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="mb-2">
+
+                    <label>Description</label>
+
+                    <textarea name="Description"
+                              class="form-control"></textarea>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Currency</label>
+
+                    <select name="Currency"
+                            class="form-control">
+
+                        <option value="ZAR">ZAR - South African Rand</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="BWP">BWP - Botswana Pula</option>
+                        <option value="NAD">NAD - Namibian Dollar</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Cost</label>
+
+                    <input name="Cost"
+                           class="form-control"
+                           type="number"
+                           step="0.01" />
+
+                    <small class="text-muted">
+                        Non-ZAR currencies will automatically
+                        be converted into ZAR before saving.
+                    </small>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Create Request
+
+                </button>
+
+                <div class="text-danger mt-2">
+                    @Html.ValidationSummary()
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- =====================================
+             RIGHT PANEL - TABLE
+        ====================================== -->
+
+        <div class="table-panel">
+
+            <h3>Existing Service Requests</h3>
+
+            <div class="table-scroll">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+                            <th>SR ID</th>
+                            <th>Contract</th>
+                            <th>Description</th>
+                            <th>Cost</th>
+                            <th>Status</th>
+                            <th>Workflow</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in requests)
+                        {
+                            <tr>
+
+                                <td>@item.ServRequestID</td>
+
+                                <td>@item.ContractID</td>
+
+                                <td>@item.Description</td>
+
+                                <td>R @item.Cost</td>
+
+                                <td>@item.Status</td>
+
+                                <td>
+                                    Workflow Actions
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer-section">
+    <h4>TechMove Logistics</h4>
+    <p>
+        Delivering innovative and scalable logistics management solutions.
+    </p>
+</div>

@@ -1,0 +1,358 @@
+﻿@model IEnumerable<EAPD7111wPOE_Part1.Models.Contract>
+
+@{
+    ViewData["Title"] = "Contract Management";
+
+    var contracts = Model ?? new List<EAPD7111wPOE_Part1.Models.Contract>();
+}
+
+<style>
+
+    body {
+        overflow: hidden;
+    }
+
+    .container {
+        max-width: 98%;
+    }
+
+    /* =========================================
+           HERO
+        ========================================== */
+
+    .hero-section {
+        background: linear-gradient(to right, #0f172a, #1e3a8a);
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+        .hero-section h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .hero-section p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+    .page-name {
+        font-size: 20px;
+        color: #dbeafe;
+    }
+
+    /* =========================================
+           MAIN LAYOUT
+        ========================================== */
+
+    .main-layout {
+        display: flex;
+        gap: 15px;
+        height: 56vh;
+    }
+
+    /* =========================================
+           FORM PANEL
+        ========================================== */
+
+    .form-panel {
+        width: 32%;
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        overflow-y: auto;
+    }
+
+        .form-panel h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+    .form-control {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+
+    /* =========================================
+           TABLE PANEL
+        ========================================== */
+
+    .table-panel {
+        width: 68%;
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+        .table-panel h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+    .table-scroll {
+        max-height: 42vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+
+    .table {
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+    /* =========================================
+           FOOTER
+        ========================================== */
+
+    .footer-section {
+        margin-top: 10px;
+        text-align: center;
+        padding: 8px;
+        background: #f1f5f9;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+</style>
+
+<div class="hero-section">
+
+    <h1>TechMove Logistics</h1>
+
+    <p>
+        Smart Logistics Contract Management Platform
+    </p>
+
+    <div class="page-name">
+        Contract Management
+    </div>
+
+</div>
+
+<partial name="_NavigationMenu" />
+
+<div class="container">
+
+    <div class="main-layout">
+
+        <!-- =====================================
+             LEFT PANEL
+        ====================================== -->
+
+        <div class="form-panel">
+
+            <h3>Create Contract</h3>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success p-2">
+                    @TempData["Success"]
+                </div>
+            }
+
+            <form asp-controller="Home"
+                  asp-action="CreateContract"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="mb-2">
+
+                    <label>Client ID</label>
+
+                    <input name="ClientID"
+                           class="form-control"
+                           type="number" />
+
+                </div>
+
+                <div class="mb-2">
+
+                    <label>Start Date</label>
+
+                    <input name="StartDate"
+                           class="form-control"
+                           type="date" />
+
+                </div>
+
+                <div class="mb-2">
+
+                    <label>End Date</label>
+
+                    <input name="EndDate"
+                           class="form-control"
+                           type="date" />
+
+                </div>
+
+                <div class="mb-2">
+
+                    <label>Status</label>
+
+                    <select name="Status"
+                            class="form-control">
+
+                        <option value="">-- Select Status --</option>
+
+                        <option value="Draft">Draft</option>
+                        <option value="Active">Active</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Expired">Expired</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-2">
+
+                    <label>Service Level</label>
+
+                    <select name="ServiceLevel"
+                            class="form-control">
+
+                        <option value="">-- Select Level --</option>
+
+                        <option value="Basic">Basic</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Enterprise">Enterprise</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Upload Contract</label>
+
+                    <input name="ContractDocument"
+                           class="form-control"
+                           type="file"
+                           accept=".pdf" />
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Create Contract
+
+                </button>
+
+                <div class="text-danger mt-2">
+                    @Html.ValidationSummary()
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- =====================================
+             RIGHT PANEL
+        ====================================== -->
+
+        <div class="table-panel">
+
+            <h3>Existing Contracts</h3>
+
+            <div class="table-scroll">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Client</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Status</th>
+                            <th>Level</th>
+                            <th>Document</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in contracts)
+                        {
+                            <tr>
+
+                                <td>@item.ContractID</td>
+
+                                <td>@item.ClientID</td>
+
+                                <td>@item.StartDate.ToShortDateString()</td>
+
+                                <td>@item.EndDate.ToShortDateString()</td>
+
+                                <td>@item.Status</td>
+
+                                <td>@item.ServiceLevel</td>
+
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(item.ContractDocumentPath))
+                                    {
+                                        <a href="@item.ContractDocumentPath"
+                                           target="_blank"
+                                           class="btn btn-sm btn-outline-primary">
+
+                                            View
+
+                                        </a>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer-section">
+
+    <h4>TechMove Logistics</h4>
+
+    <p>
+        Delivering innovative and scalable logistics solutions.
+    </p>
+
+</div>
